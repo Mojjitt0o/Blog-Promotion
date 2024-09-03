@@ -118,6 +118,7 @@
 //     res.sendFile(path.join(__dirname, '/views/verification-success.html'));
 // });
 
+
 // app.get('/admin-verification', (req, res) => {
 //     res.sendFile(path.join(__dirname, 'views', 'admin-verification.html'));
 // });
@@ -274,6 +275,7 @@ const is_admin = require('./middlewares')
 const itemRouter = require('./routers/item.router'); // Ganti dengan path yang sesuai
 const newsRouter = require('./routers/news.router'); // Import newsRouter
 require('dotenv').config();
+
 
 const app = express();
 app.use(express.json());
