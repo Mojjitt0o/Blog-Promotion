@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kasir</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .menu a {
+            text-decoration: none;
+            padding: 10px;
+            color: #333;
+            transition: background-color 0.3s ease;
+        }
+
+        .menu a:hover {
+            background-color: #ddd;
+        }
+
+        .orders {
+            margin-top: 20px;
+        }
+
+        .order-item {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .item {
+            margin-bottom: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        .form-group button {
+            padding: 10px 20px;
+        }
+
+        .form-items {
+            margin-bottom: 15px;
+        }
+
+        .form-items .item-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .form-items .item-row input {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="menu">
+            <a href="admin-dashboard.html">Dashboard</a>
+            <a href="#" class="active">Kasir</a>
+        </div>
+
+        <div id="mainContent" class="orders">
+            <h2>Daftar Order</h2>
+            <div id="orderList">
+                <!-- Daftar order akan ditampilkan di sini -->
+            </div>
+        </div>
+
+        <div id="orderForm">
+            <h2>Buat Order Baru</h2>
+            <form id="createForm">
+                <div class="form-items" id="itemsContainer">
+                    <div class="item-row">
+                        <input type="text" name="name" placeholder="Nama Barang" required>
+                        <input type="number" name="quantity" placeholder="Quantity" required>
+                        <button type="button" onclick="addItem()">+</button>
+                    </div>
+                </div>
+                <button type="submit">Buat Order</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const createForm = document.getElementById('createForm');
+        const orderList = document.getElementById('orderList');
+
+        function addItem() {
+            const itemsContainer = document.getElementById('itemsContainer');
+            const itemRow = document.createElement('div');
+            itemRow.className = 'item-row';
+            itemRow.innerHTML = `
+                <input type="text" name="name" placeholder="Nama Barang" required>
+                <input type="number" name="quantity" placeholder="Quantity" required>
+                <button type="button" onclick="removeItem(this)">-</button>
+            `;
+            itemsContainer.appendChild(itemRow);
+        }
+
+        function removeItem(button) {
+            const itemRow = button.parentNode;
+            itemRow.parentNode.removeChild(itemRow);
+        }
+
+        createForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const itemRows = document.querySelectorAll('.item-row');
+            const items = Array.from(itemRows).map(row => {
+                const name = row.querySelector('input[name="name"]').value;
+                const quantity = row.querySelector('input[name="quantity"]').value;
+                return { name, quantity: parseInt(quantity, 10) };
+            });
+
+            const response = await fetch('/orders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ items })
+            });
+
+            if (response.ok) {
+                loadOrders();
+                createForm.reset();
+                while (itemRows.length > 1) {
+                    itemRows[1].remove();
+                }
+            } else {
+                const error = await response.json();
+                alert('Error: ' + error.message);
+            }
+        });
+
+        async function loadOrders() {
+            const response = await fetch('/orders');
+            if (response.ok) {
+                const { data } = await response.json();
+                orderList.innerHTML = '';
+                data.forEach(order => {
+                    const orderItem = document.createElement('div');
+                    orderItem.className = 'order-item';
+                    orderItem.innerHTML = `
+                        <div class="order-header">
+                            <span>Order ID: ${order.id}</span>
+                            <span>Status: ${order.status}</span>
+                            <span>Total Price: ${order.total_price}</span>
+                        </div>
+                        <div>
+                            ${order.items.map(item => `
+                                <div class="item">
+                                    <span>${item.name}</span>
+                                    <span>Price: ${item.item_price}</span>
+                                    <span>Quantity: ${item.item_quantity}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                    orderList.appendChild(orderItem);
+                });
+            } else {
+                const error = await response.json();
+                alert('Error: ' + error.message);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadOrders);
+    </script>
+</body>
+</html>

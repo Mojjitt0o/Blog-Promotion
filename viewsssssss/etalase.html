@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etalase</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+        }
+
+        .container {
+            width: 90%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .item {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .item img {
+            max-width: 100px;
+            max-height: 100px;
+            margin-right: 20px;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-details h3 {
+            margin: 0 0 10px;
+        }
+
+        .item-details p {
+            margin: 0 0 5px;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                margin: 20px;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .container {
+                margin: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Daftar Item Etalase</h1>
+        <div id="itemsContainer"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('/items', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    displayItems(data.data);
+                } else {
+                    console.error('Failed to fetch items:', data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        function displayItems(items) {
+            const itemsContainer = document.getElementById('itemsContainer');
+            itemsContainer.innerHTML = '';
+
+            if (items.length === 0) {
+                itemsContainer.innerHTML = '<p>Tidak ada item yang tersedia.</p>';
+                return;
+            }
+
+            items.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'item';
+
+                const itemImage = document.createElement('img');
+                itemImage.src = item.image;
+                itemImage.alt = item.name;
+
+                const itemDetails = document.createElement('div');
+                itemDetails.className = 'item-details';
+
+                const itemName = document.createElement('h3');
+                itemName.textContent = item.name;
+
+                const itemDescription = document.createElement('p');
+                itemDescription.textContent = `Deskripsi: ${item.description}`;
+
+                const itemStock = document.createElement('p');
+                itemStock.textContent = `Stok: ${item.stock}`;
+
+                const itemPrice = document.createElement('p');
+                itemPrice.textContent = `Harga: Rp${item.price}`;
+
+                itemDetails.appendChild(itemName);
+                itemDetails.appendChild(itemDescription);
+                itemDetails.appendChild(itemStock);
+                itemDetails.appendChild(itemPrice);
+
+                itemElement.appendChild(itemImage);
+                itemElement.appendChild(itemDetails);
+
+                itemsContainer.appendChild(itemElement);
+            });
+        }
+    </script>
+</body>
+</html>

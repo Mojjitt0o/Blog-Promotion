@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masuk</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom right, #4E6AFF, #ACFFEE);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            flex-direction: column;
+        }
+
+        .app-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+            width: 90%;
+            max-width: 350px;
+        }
+
+        .app-header img {
+            width: 100%;
+            max-width: 350px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 350px;
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+            margin-top: -50px;
+        }
+
+        .header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .header h2 {
+            margin: 0;
+        }
+
+        .form {
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        input[type="email"], input[type="password"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button[type="submit"], button[type="button"] {
+            width: 100%;
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover, button[type="button"]:hover {
+            background-color: #555;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .animation-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bubble {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            animation: float 8s infinite ease-in-out, rotate 10s linear infinite;
+            pointer-events: none;
+            transform-origin: center;
+        }
+
+        .bubble:nth-child(1) {
+            top: 100%;
+            left: 10%;
+            animation-delay: 0s;
+            animation-duration: 10s;
+        }
+
+        .bubble:nth-child(2) {
+            top: 110%;
+            left: 30%;
+            animation-delay: 2s;
+            animation-duration: 8s;
+        }
+
+        .bubble:nth-child(3) {
+            top: 120%;
+            left: 50%;
+            animation-delay: 4s;
+            animation-duration: 9s;
+        }
+
+        .bubble:nth-child(4) {
+            top: 130%;
+            left: 70%;
+            animation-delay: 1s;
+            animation-duration: 7s;
+        }
+
+        .bubble:nth-child(5) {
+            top: 140%;
+            left: 90%;
+            animation-delay: 3s;
+            animation-duration: 6s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-100vh);
+            }
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .copyright {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: #333;
+            width: 100%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="animation-container">
+        <!-- Gelembung-gelembung -->
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    </div>
+
+    <div class="app-header">
+        <img src="CashyAttend.png" alt="Logo">
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h2>Masuk</h2>
+        </div>
+        <div class="form">
+            <form>
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Masukkan email Anda">
+                <label for="password">Kata Sandi</label>
+                <input type="password" id="password" placeholder="Masukkan kata sandi Anda">
+                <button type="submit">MASUK</button>
+                <p>Halo, Teman! <br> Daftarkan diri Anda dan mulai gunakan layanan kami segera</p>
+                <button type="button" onclick="window.location.href = '/register';">DAFTAR</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script untuk melakukan login -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.querySelector('form');
+
+            form.addEventListener('submit', async function (event) {
+                event.preventDefault();
+
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+
+                try {
+                    const response = await fetch('/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ email, password })
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(data.message || 'Login gagal');
+                    }
+
+                    // Login berhasil
+                    localStorage.setItem('token', data.token); // Simpan token di local storage
+                    
+                    // Redirect berdasarkan is_admin
+                    if (data.is_admin) {
+                        window.location.href = '/admin'; // Arahkan ke halaman admin jika is_admin true
+                    } else {
+                        window.location.href = '/user'; // Arahkan ke halaman user jika is_admin false
+                    }
+
+                } catch (error) {
+                    console.error('Error during login:', error);
+                    alert(error.message || 'Login gagal');
+                }
+            });
+        });
+    </script>
+
+    <!-- Teks Hak Cipta -->
+    <div class="copyright">
+        &copy; 2024 Perusahaan Anda. Semua hak dilindungi.
+    </div>
+</body>
+</html>

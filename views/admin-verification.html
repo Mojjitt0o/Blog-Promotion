@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Verification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom right, #4E6AFF, #ACFFEE);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .container {
+            width: 350px;
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        
+        .header h2 {
+            margin: 0;
+        }
+        
+        .form {
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        
+        input[type="email"], input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        button[type="submit"] {
+            width: 100%;
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        button[type="submit"]:hover {
+            background-color: #555;
+        }
+        
+        p {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .notification {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .animation-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+        
+        .bubble {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            animation: float 8s infinite ease-in-out, rotate 10s linear infinite;
+            pointer-events: none;
+            transform-origin: center;
+        }
+        
+        .bubble:nth-child(1) {
+            top: 100%;
+            left: 10%;
+            animation-delay: 0s;
+            animation-duration: 10s;
+        }
+        
+        .bubble:nth-child(2) {
+            top: 110%;
+            left: 30%;
+            animation-delay: 2s;
+            animation-duration: 8s;
+        }
+        
+        .bubble:nth-child(3) {
+            top: 120%;
+            left: 50%;
+            animation-delay: 4s;
+            animation-duration: 9s;
+        }
+        
+        .bubble:nth-child(4) {
+            top: 130%;
+            left: 70%;
+            animation-delay: 1s;
+            animation-duration: 7s;
+        }
+        
+        .bubble:nth-child(5) {
+            top: 140%;
+            left: 90%;
+            animation-delay: 3s;
+            animation-duration: 6s;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-100vh);
+            }
+        }
+        
+        @keyframes rotate {
+            0% {
+                transform: rotate(0);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .copyright {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="animation-container">
+        <!-- Animation bubbles -->
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    </div>
+    
+    <div class="container">
+        <div class="header">
+            <h2>Admin Verification</h2>
+        </div>
+        <div class="form">
+            <form id="verificationForm" action="/verify_admin" method="POST">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                
+                <label for="activationCode">Activation Code</label>
+                <input type="text" id="activationCode" name="activationCode" placeholder="Enter activation code" required>
+                
+                <button type="submit">VERIFY</button>
+                <p>Go back to <a href="/login">Login</a></p>
+            </form>
+            
+            <div class="notification" id="notification">
+                Verification successful. You can now access admin features.
+            </div>
+        </div>
+    </div>
+
+    <!-- Copyright text -->
+    <div class="copyright">
+        &copy; 2024 Your Company. All rights reserved.
+    </div>
+
+    <script>
+        const verificationForm = document.getElementById('verificationForm');
+        const notification = document.getElementById('notification');
+
+        verificationForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(verificationForm);
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(Object.fromEntries(formData))
+            };
+
+            try {
+                const response = await fetch('/verify_admin', requestOptions);
+                const data = await response.json();
+
+                if (response.ok) {
+                    notification.style.display = 'block';
+                    verificationForm.reset();
+                    setTimeout(() => {
+                        notification.style.display = 'none';
+                        // Redirect to admin dashboard or appropriate page
+                        window.location.href = '/login';
+                    }, 3000);
+                } else {
+                    alert(data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred during verification');
+            }
+        });
+    </script>
+</body>
+</html>
