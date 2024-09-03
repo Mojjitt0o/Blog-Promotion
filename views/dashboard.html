@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BingleShop</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom right, #4E6AFF, #ACFFEE);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        nav a {
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: #007BFF;
+            color: #fff;
+        }
+
+        nav a.active {
+            font-weight: bolder;
+            background-color: #007BFF;
+            color: #fff;
+        }
+
+        .main {
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        /* Product Highlight Slider */
+        .product-highlight-slider {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .product-highlight-slider img {
+            width: 100%;
+            max-width: 800px;
+            transition: transform 0.5s ease;
+        }
+
+        /* Carousel */
+        .carousel {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 30px 0;
+            gap: 10px;
+        }
+
+        .carousel img {
+            width: 100%;
+            max-width: 200px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .carousel img:hover {
+            transform: scale(1.1);
+        }
+
+        /* ShopEase Description */
+        .shop-ease-description {
+            margin: 40px 0;
+            font-size: 18px;
+            line-height: 1.5;
+            color: #444;
+        }
+
+        /* Latest News Section */
+        .latest-news {
+            margin: 50px 0;
+            text-align: center;
+        }
+
+        .latest-news h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .news-box {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: left;
+        }
+
+        .news-box h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .news-box p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .news-button {
+            margin-top: 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .news-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Newsletter Section */
+        .newsletter {
+            margin: 50px 0;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .newsletter input[type="email"] {
+            width: 60%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .newsletter button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .newsletter button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Social Media Follow Section */
+        .follow-us {
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .follow-us h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .social-icons a {
+            color: #333;
+            font-size: 24px;
+            transition: color 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: #007BFF;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #fff;
+            color: #333;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: row;
+                gap: 10px;
+            }
+
+            nav a {
+                font-size: 14px;
+                padding: 8px 15px;
+            }
+
+            .carousel img {
+                max-width: 150px;
+            }
+
+            .newsletter input[type="email"] {
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="/" class="active">Home</a>
+            <a href="/contactus">Contact Us</a>
+            <a href="./produk">Produk</a>
+            <a href="/login">Login</a>
+        </nav>
+    </header>
+
+    <div class="main">
+
+        <!-- Product Highlight Slider -->
+        <div class="product-highlight-slider">
+            <img class="product-image" src="ShopEase.png" alt="Product Image 1">
+        </div>
+
+        <!-- Carousel -->
+        <div class="carousel">
+            <img src="ShopEase.png" alt="Carousel Image 1" onclick="showLargeImage('ShopEase.png')">
+            <img src="sepatu1.png" alt="Carousel Image 2" onclick="showLargeImage('sepatu1.png')">
+            <img src="ShopEase.png" alt="Carousel Image 3" onclick="showLargeImage('ShopEase.png')">
+        </div>
+
+        <!-- ShopEase Description -->
+        <div class="shop-ease-description">
+            <p>Welcome to ShopEase, your go-to destination for the best shopping experience. Discover a wide range of
+                products and enjoy seamless online shopping. Experience the ease of finding exactly what you need, all
+                at your fingertips. ShopEase is committed to providing quality products and exceptional customer service.</p>
+        </div>
+
+        <!-- Latest News Section -->
+        <div class="latest-news">
+            <h2>Berita Terkini</h2>
+            <div class="news-grid">
+                <div class="news-box">
+                    <h3>Berita 1</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
+                <div class="news-box">
+                    <h3>Berita 2</h3>
+                    <p>Proin eget tortor risus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.</p>
+                </div>
+                <div class="news-box">
+                    <h3>Berita 3</h3>
+                    <p>Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.</p>
+                </div>
+                <div class="news-box">
+                    <h3>Berita 4</h3>
+                    <p>Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.</p>
+                </div>
+            </div>
+            <button class="news-button">Lihat Berita Lainnya</button>
+        </div>
+
+        <!-- Newsletter Section -->
+        <div class="newsletter">
+            <h2>Join Our Newsletter</h2>
+            <input type="email" placeholder="Enter your email">
+            <button>Subscribe</button>
+        </div>
+
+        <!-- Follow Us Section -->
+        <div class="follow-us">
+            <h2>Follow Us</h2>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 ShopEase. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function showLargeImage(src) {
+            const productImage = document.querySelector('.product-image');
+            productImage.src = src;
+            productImage.classList.add('show');
+        }
+    </script>
+</body>
+
+</html>

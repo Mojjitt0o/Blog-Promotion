@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BingleShop</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom right, #4E6AFF, #ACFFEE);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        nav a {
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: #007BFF;
+            color: #fff;
+        }
+
+        nav a.active {
+            font-weight: bolder;
+            background-color: #007BFF;
+            color: #fff;
+        }
+
+        .main {
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        /* Product Highlight Slider */
+        .product-highlight-slider {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .product-highlight-slider img {
+            width: 100%;
+            max-width: 800px;
+            transition: transform 0.5s ease;
+        }
+
+        /* Carousel */
+        .carousel {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 30px 0;
+            gap: 10px;
+        }
+
+        .carousel img {
+            width: 100%;
+            max-width: 200px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .carousel img:hover {
+            transform: scale(1.1);
+        }
+
+        /* ShopEase Description */
+        .shop-ease-description {
+            margin: 40px 0;
+            font-size: 18px;
+            line-height: 1.5;
+            color: #444;
+        }
+
+        /* Latest News Section */
+        .latest-news {
+            margin: 50px 0;
+            text-align: center;
+        }
+
+        .latest-news h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .news-box {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: left;
+        }
+
+        .news-box h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .news-box p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .action-icons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .action-icons i {
+            cursor: pointer;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .action-icons i:hover {
+            color: #007BFF;
+        }
+
+        .news-button {
+            margin-top: 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .news-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Newsletter Section */
+        .newsletter {
+            margin: 50px 0;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .newsletter input[type="email"] {
+            width: 60%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .newsletter button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .newsletter button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Social Media Follow Section */
+        .follow-us {
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .follow-us h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .social-icons a {
+            color: #333;
+            font-size: 24px;
+            transition: color 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: #007BFF;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #fff;
+            color: #333;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: row;
+                gap: 10px;
+            }
+
+            nav a {
+                font-size: 14px;
+                padding: 8px 15px;
+            }
+
+            .carousel img {
+                max-width: 150px;
+            }
+
+            .newsletter input[type="email"] {
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="/admin" class="active">Home</a>
+            <a href="/admin-contactus">Contact Us</a>
+            <a href="/admin-product">Produk</a>
+            <a href="/admin-laporan">Laporan</a>
+        </nav>
+    </header>
+
+    <div class="main">
+
+        <!-- Product Highlight Slider -->
+        <div class="product-highlight-slider">
+            <img class="product-image" src="ShopEase.png" alt="Product Image 1">
+        </div>
+
+        <!-- Carousel -->
+        <div class="carousel">
+            <img src="ShopEase.png" alt="Carousel Image 1" onclick="showLargeImage('ShopEase.png')">
+            <img src="sepatu1.png" alt="Carousel Image 2" onclick="showLargeImage('sepatu1.png')">
+            <img src="ShopEase.png" alt="Carousel Image 3" onclick="showLargeImage('ShopEase.png')">
+        </div>
+
+        <!-- ShopEase Description -->
+        <div class="shop-ease-description">
+            <p>Welcome to ShopEase, your go-to destination for all things fashion! Discover our latest collections and trends to stay ahead in style. Shop now and enjoy exclusive deals and offers.</p>
+        </div>
+
+        <!-- Latest News Section -->
+        <div class="latest-news">
+            <h2>Berita Terkini</h2>
+            <div class="news-grid" id="news-container">
+                <!-- News items will be injected here -->
+            </div>
+            <a href="add-news" class="news-button">Tambah Berita Baru</a>
+        </div>
+
+        <!-- Newsletter Section -->
+        <div class="newsletter">
+            <h2>Subscribe to our Newsletter</h2>
+            <input type="email" placeholder="Enter your email" id="newsletter-email">
+            <button onclick="subscribeNewsletter()">Subscribe</button>
+        </div>
+
+        <!-- Social Media Follow Section -->
+        <div class="follow-us">
+            <h2>Follow Us</h2>
+            <div class="social-icons">
+                <a href="https://facebook.com" target="_blank">F</a>
+                <a href="https://twitter.com" target="_blank">T</a>
+                <a href="https://instagram.com" target="_blank">I</a>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        &copy; 2024 BingleShop. All rights reserved.
+    </footer>
+
+    <script>
+        function showLargeImage(src) {
+            document.querySelector('.product-highlight-slider img').src = src;
+        }
+
+        function subscribeNewsletter() {
+            const email = document.getElementById('newsletter-email').value;
+            alert('Thank you for subscribing with ' + email);
+        }
+
+        async function fetchNews() {
+            try {
+                const response = await fetch('/news');
+                const data = await response.json();
+                const newsContainer = document.getElementById('news-container');
+
+                data.forEach(news => {
+                    const newsBox = document.createElement('div');
+                    newsBox.classList.add('news-box');
+
+                    const newsTitle = document.createElement('h3');
+                    newsTitle.textContent = news.title;
+
+                    const newsContent = document.createElement('p');
+                    newsContent.textContent = news.content;
+
+                    const actionIcons = document.createElement('div');
+                    actionIcons.classList.add('action-icons');
+
+                    const editIcon = document.createElement('i');
+                    editIcon.textContent = '✏️'; // Edit icon
+                    editIcon.onclick = () => editNews(news.id);
+
+                    const deleteIcon = document.createElement('i');
+                    deleteIcon.textContent = '🗑️'; // Delete icon
+                    deleteIcon.onclick = () => deleteNews(news.id);
+
+                    actionIcons.appendChild(editIcon);
+                    actionIcons.appendChild(deleteIcon);
+
+                    newsBox.appendChild(newsTitle);
+                    newsBox.appendChild(newsContent);
+                    newsBox.appendChild(actionIcons);
+
+                    newsContainer.appendChild(newsBox);
+                });
+            } catch (error) {
+                console.error('Error fetching news:', error);
+            }
+        }
+
+        async function deleteNews(id) {
+            try {
+                const response = await fetch(`/news/${id}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    alert('News deleted successfully');
+                    location.reload(); // Refresh the page to update the news list
+                } else {
+                    alert('Failed to delete news');
+                }
+            } catch (error) {
+                console.error('Error deleting news:', error);
+                alert('An error occurred while deleting the news');
+            }
+        }
+
+        function editNews(id) {
+            const newContent = prompt('Enter new content for the news item:');
+            if (newContent) {
+                fetch(`/news/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ content: newContent })
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('News updated successfully');
+                            location.reload(); // Refresh the page to update the news list
+                        } else {
+                            alert('Failed to update news');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error updating news:', error);
+                        alert('An error occurred while updating the news');
+                    });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchNews);
+    </script>
+</body>
+
+</html>

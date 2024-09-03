@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produk - BingleShop</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        nav a {
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: #007BFF;
+            color: #fff;
+        }
+
+        nav a.active {
+            font-weight: bolder;
+            background-color: #007BFF;
+            color: #fff;
+        }
+
+        .profile-menu {
+            position: relative;
+            display: inline-block;
+        }
+
+        .profile-icon {
+            width: 30px;
+            height: 30px;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .profile-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 40px;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            z-index: 1000;
+            width: 150px;
+        }
+
+        .profile-dropdown a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .profile-dropdown a:hover {
+            background-color: #007BFF;
+            color: #fff;
+        }
+
+        .profile-menu:hover .profile-dropdown {
+            display: block;
+        }
+
+        .main {
+            padding: 50px 20px;
+        }
+
+        .product-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .product-card {
+            width: calc(25% - 20px); /* 4 products per row with gap */
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-card h3 {
+            margin: 10px;
+            font-size: 18px;
+        }
+
+        .product-card p {
+            margin: 0 10px 10px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .product-card .delete-icon,
+        .product-card .edit-icon {
+            position: absolute;
+            top: 10px;
+            background: #ff6f6f;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .product-card .edit-icon {
+            right: 50px;
+            background: #007BFF;
+        }
+
+        .add-product-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .add-product-button:hover {
+            background-color: #0056b3;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #fff;
+            color: #333;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .product-card {
+                width: calc(50% - 20px); /* 2 products per row on medium screens */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .product-card {
+                width: calc(100% - 20px); /* 1 product per row on small screens */
+            }
+
+            .add-product-button {
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+            }
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 5px;
+        }
+
+        .modal-header {
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: 20px 0;
+        }
+
+        .modal-footer {
+            padding: 10px 0;
+            border-top: 1px solid #ddd;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/admin">Home</a>
+            <a href="/admin-contactus">Contact Us</a>
+            <a href="/admin-product" class="active">Produk</a>
+            <a href="/admin-laporan">Laporan</a>
+        </nav>
+        <div class="profile-menu">
+            <div class="profile-icon">P</div>
+            <div class="profile-dropdown">
+                <a href="/profile">Profil</a>
+                <a href="/settings">Pengaturan</a>
+                <a href="/logout">Logout</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="main">
+        <div class="product-grid" id="product-grid">
+            <!-- Produk akan ditampilkan di sini -->
+        </div>
+    </div>
+
+    <button class="add-product-button" onclick="addProduct()">+</button>
+
+    <!-- Modal for editing products -->
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Produk</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="edit-form">
+                    <input type="hidden" id="edit-product-id">
+                    <label for="edit-name">Nama Produk:</label>
+                    <input type="text" id="edit-name" name="name" required><br><br>
+                    <label for="edit-price">Harga:</label>
+                    <input type="number" id="edit-price" name="price" required><br><br>
+                    <label for="edit-image">URL Gambar:</label>
+                    <input type="text" id="edit-image" name="image" required><br><br>
+                    <button type="submit">Simpan</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button onclick="closeModal()">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 BingleShop. All rights reserved. | Privacy Policy</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProducts();
+        });
+
+        function loadProducts() {
+            fetch('/api/items')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const productGrid = document.getElementById('product-grid');
+                        productGrid.innerHTML = ''; // Clear the grid
+
+                        data.data.forEach(item => {
+                            const productCard = document.createElement('div');
+                            productCard.className = 'product-card';
+                            productCard.innerHTML = `
+                                <img src="${item.image}" alt="${item.name}">
+                                <h3>${item.name}</h3>
+                                <p>Rp ${item.price}</p>
+                                <button class="edit-icon" onclick="openModal(${item.id}, '${item.name}', ${item.price}, '${item.image}')">✎</button>
+                                <button class="delete-icon" onclick="deleteProduct(${item.id})">&times;</button>
+                            `;
+                            productGrid.appendChild(productCard);
+                        });
+                    }
+                })
+                .catch(error => console.error('Error loading products:', error));
+        }
+
+        function deleteProduct(id) {
+            fetch(`/api/items/${id}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    loadProducts();
+                }
+            })
+            .catch(error => console.error('Error deleting product:', error));
+        }
+
+        function addProduct() {
+            window.location.href = '/add-product'; // Update to match route in app.js
+        }
+
+        function openModal(id, name, price, image) {
+            document.getElementById('edit-product-id').value = id;
+            document.getElementById('edit-name').value = name;
+            document.getElementById('edit-price').value = price;
+            document.getElementById('edit-image').value = image;
+            document.getElementById('edit-modal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('edit-modal').style.display = 'none';
+        }
+
+        document.getElementById('edit-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = document.getElementById('edit-product-id').value;
+            const name = document.getElementById('edit-name').value;
+            const price = document.getElementById('edit-price').value;
+            const image = document.getElementById('edit-image').value;
+
+            fetch(`/api/items/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, price, image })
+            })
+            .then(response => {
+                if (response.ok) {
+                    loadProducts();
+                    closeModal();
+                }
+            })
+            .catch(error => console.error('Error updating product:', error));
+        });
+    </script>
+</body>
+</html>

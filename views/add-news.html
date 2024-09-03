@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Berita</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #4E6AFF, #ACFFEE);
+            color: #333;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin: 10px 0 5px;
+        }
+        input, textarea {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px;
+            background-color: #4E6AFF;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #3a5bbf;
+        }
+        .error {
+            color: red;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tambah Berita</h1>
+        <form id="news-form">
+            <div class="error" id="error-message"></div>
+            <label for="title">Judul Berita</label>
+            <input type="text" id="title" name="title" required>
+            
+            <label for="content">Isi Berita</label>
+            <textarea id="content" name="content" rows="10" required></textarea>
+            
+            <button type="submit">Simpan Berita</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('news-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+            const errorMessage = document.getElementById('error-message');
+            // Clear any previous error messages
+            errorMessage.textContent = '';
+
+            try {
+                const response = await fetch('/api/news', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ title, content }),
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    errorMessage.textContent = errorData.message || 'Terjadi kesalahan saat menyimpan berita.';
+                    return;
+                }
+
+                // Redirect to the admin page or show a success message
+                window.location.href = '/admin';
+            } catch (error) {
+                errorMessage.textContent = 'Terjadi kesalahan saat mengirim data.';
+            }
+        });
+    </script>
+</body>
+</html>
